@@ -56,7 +56,7 @@ class RedditWidget(private val list: List<RedditItemModel>) : GlanceAppWidget() 
             if (list.isEmpty()) {
                 EmptyListContent()
             } else {
-                UniversityListContent()
+                RedditListContent()
             }
         }
     }
@@ -64,22 +64,23 @@ class RedditWidget(private val list: List<RedditItemModel>) : GlanceAppWidget() 
     @Composable
     fun EmptyListContent() {
         Text("No Data")
+
     }
 
     @Composable
-    fun UniversityListContent() {
+    fun RedditListContent() {
         LazyColumn(
             modifier = GlanceModifier.fillMaxSize()
                 .padding(8.dp)
         ) {
             items(list) { it ->
-                UniversityListItem(it)
+                RedditListItem(it)
             }
         }
     }
 
     @Composable
-    fun UniversityListItem(item: RedditItemModel) {
+    fun RedditListItem(item: RedditItemModel) {
         Text(item.title, GlanceModifier.padding(2.dp))
     }
 
