@@ -18,6 +18,7 @@ import androidx.glance.layout.*
 import androidx.glance.text.Text
 import com.mehmetpeker.glancereddit.MainActivity
 import com.mehmetpeker.glancereddit.data.RedditItemModel
+import com.mehmetpeker.glancereddit.R
 
 class RedditWidget(private val list: List<RedditItemModel>) : GlanceAppWidget() {
 
