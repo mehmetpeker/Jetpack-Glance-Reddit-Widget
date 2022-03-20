@@ -5,7 +5,9 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.mehmetpeker.glancereddit.data.RedditItemModel
+import com.mehmetpeker.glancereddit.getWidgetDataStore
 import com.mehmetpeker.glancereddit.ui.widget.RedditWidget
+import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -73,11 +75,21 @@ class GlanceWorker(private val appContext: Context, private val params: WorkerPa
     }
 
     private suspend fun updateGlanceWidget(list: List<RedditItemModel>) {
+
         val glanceId =
             GlanceAppWidgetManager(appContext).getGlanceIds(RedditWidget::class.java)
                 .firstOrNull()
-        glanceId?.let { id ->
-            RedditWidget(list).update(appContext,id)
+
+        val redditDataStore = runBlocking {
+            appContext.getWidgetDataStore()
         }
+
+        redditDataStore.updateData {
+            //Datastoredaki veriyi buradan güncelliyorum ama datayı nasıl değiştirecegimi bilemiyorum
+            it.copy(list = emptyList())
+        }
+        
+        RedditWidget().update(appContext, glanceId!!)
+
     }
 }

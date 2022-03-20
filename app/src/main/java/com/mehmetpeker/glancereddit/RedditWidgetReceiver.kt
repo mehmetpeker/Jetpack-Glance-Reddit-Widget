@@ -6,5 +6,5 @@ import com.mehmetpeker.glancereddit.ui.widget.RedditWidget
 
 
 class RedditWidgetReceiver : GlanceAppWidgetReceiver() {
-    override val glanceAppWidget: GlanceAppWidget = RedditWidget(emptyList())
+    override val glanceAppWidget: GlanceAppWidget = RedditWidget()
 }

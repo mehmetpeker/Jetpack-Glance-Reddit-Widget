@@ -15,16 +15,24 @@ import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.layout.*
+import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.text.Text
 import com.mehmetpeker.glancereddit.MainActivity
-import com.mehmetpeker.glancereddit.data.RedditItemModel
 import com.mehmetpeker.glancereddit.R
+import com.mehmetpeker.glancereddit.RedditGlanceStateDefinition
+import com.mehmetpeker.glancereddit.RedditStateGlance
+import com.mehmetpeker.glancereddit.data.RedditItemModel
 
-class RedditWidget(private val list: List<RedditItemModel>) : GlanceAppWidget() {
+class RedditWidget : GlanceAppWidget() {
+
+    override val stateDefinition: GlanceStateDefinition<RedditStateGlance>
+        get() = RedditGlanceStateDefinition
 
     @Composable
     override fun Content() {
         val context = LocalContext.current
+        val glanceState = currentState<RedditStateGlance>()
+
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -53,22 +61,21 @@ class RedditWidget(private val list: List<RedditItemModel>) : GlanceAppWidget() 
                     )
                 }
             }
-            if (list.isEmpty()) {
+            if(glanceState.list.isEmpty())
                 EmptyListContent()
-            } else {
-                RedditListContent()
-            }
+            else
+                RedditListContent(list = glanceState.list)
         }
+
     }
 
     @Composable
     fun EmptyListContent() {
         Text("No Data")
-
     }
 
     @Composable
-    fun RedditListContent() {
+    fun RedditListContent(list:List<RedditItemModel>) {
         LazyColumn(
             modifier = GlanceModifier.fillMaxSize()
                 .padding(8.dp)
