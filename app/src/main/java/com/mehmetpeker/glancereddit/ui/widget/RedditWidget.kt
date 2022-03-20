@@ -20,19 +20,18 @@ import androidx.glance.text.Text
 import com.mehmetpeker.glancereddit.MainActivity
 import com.mehmetpeker.glancereddit.R
 import com.mehmetpeker.glancereddit.RedditGlanceStateDefinition
-import com.mehmetpeker.glancereddit.RedditStateGlance
 import com.mehmetpeker.glancereddit.data.RedditItemModel
+import com.mehmetpeker.glancereddit.data.RedditPreferences
 
 class RedditWidget : GlanceAppWidget() {
 
-    override val stateDefinition: GlanceStateDefinition<RedditStateGlance>
+    override val stateDefinition: GlanceStateDefinition<RedditPreferences>
         get() = RedditGlanceStateDefinition
-
     @Composable
     override fun Content() {
         val context = LocalContext.current
-        val glanceState = currentState<RedditStateGlance>()
-
+        val glanceState = currentState<RedditPreferences>()
+        val list = glanceState.redditList.toList()
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -61,10 +60,10 @@ class RedditWidget : GlanceAppWidget() {
                     )
                 }
             }
-            if(glanceState.list.isEmpty())
+            if(list.isEmpty())
                 EmptyListContent()
             else
-                RedditListContent(list = glanceState.list)
+                RedditListContent(list =list)
         }
 
     }

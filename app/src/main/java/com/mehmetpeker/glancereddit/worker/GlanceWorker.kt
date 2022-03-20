@@ -2,12 +2,14 @@ package com.mehmetpeker.glancereddit.worker
 
 import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.state.updateAppWidgetState
+import androidx.glance.appwidget.updateAll
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.mehmetpeker.glancereddit.RedditGlanceStateDefinition
 import com.mehmetpeker.glancereddit.data.RedditItemModel
-import com.mehmetpeker.glancereddit.getWidgetDataStore
 import com.mehmetpeker.glancereddit.ui.widget.RedditWidget
-import kotlinx.coroutines.runBlocking
+import kotlinx.collections.immutable.toPersistentList
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -75,21 +77,18 @@ class GlanceWorker(private val appContext: Context, private val params: WorkerPa
     }
 
     private suspend fun updateGlanceWidget(list: List<RedditItemModel>) {
-
         val glanceId =
             GlanceAppWidgetManager(appContext).getGlanceIds(RedditWidget::class.java)
                 .firstOrNull()
 
-        val redditDataStore = runBlocking {
-            appContext.getWidgetDataStore()
-        }
+        if(glanceId !=null){
 
-        redditDataStore.updateData {
-            //Datastoredaki veriyi buradan güncelliyorum ama datayı nasıl değiştirecegimi bilemiyorum
-            it.copy(list = emptyList())
+            updateAppWidgetState(appContext, RedditGlanceStateDefinition,glanceId){
+                it.copy(
+                    redditList = list.toPersistentList()
+                )
+            }
+            RedditWidget().update(appContext, glanceId)
         }
-        
-        RedditWidget().update(appContext, glanceId!!)
-
     }
 }

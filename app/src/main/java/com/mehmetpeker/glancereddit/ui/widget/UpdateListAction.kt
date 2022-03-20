@@ -10,12 +10,13 @@ import androidx.work.WorkManager
 import com.mehmetpeker.glancereddit.worker.GlanceWorker
 
 private const val GLANCE_WORK_NAME = "glance_work_name"
+
 class UpdateListAction : ActionCallback {
 
     override suspend fun onRun(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val workTag = "glanceWork"
         val glanceWork = OneTimeWorkRequest.Builder(GlanceWorker::class.java)
-           .addTag(workTag).build()
+            .addTag(workTag).build()
 
         val instanceWorkManager = WorkManager.getInstance(context)
         instanceWorkManager.beginUniqueWork(
