@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "GlanceUniversityList"
+rootProject.name = "GlanceRedditList"
 include ':app'

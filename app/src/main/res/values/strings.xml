@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GlanceReddit</string>
+    <string name="widget_label">Last 10 Post</string>
 </resources>
